@@ -54,7 +54,7 @@ hs_err_pid*
 # since they will be recreated, and may cause churn.  Uncomment if using
 # auto-import.
 # .idea/modules.xml
-# .idea/*.iml
+ .idea/*.iml
 # .idea/modules
 
 # CMake
@@ -62,6 +62,9 @@ cmake-build-*/
 
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
+*.iml
+*.iml/
+*.idea/
 
 # File-based project format
 *.iws
