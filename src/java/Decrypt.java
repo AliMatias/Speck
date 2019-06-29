@@ -1,17 +1,9 @@
-package src.java; /**
- * src.java.Decrypt.java
- * version : ak
- * Revision: $log ak$
- */
+package src.java;
 
 import src.java.utils.Utils;
 
 /**
- * This program is an implementation of block cipher Speck.
- * It decrypts  the given ciphertext by XORing with key generated 
- * from 22 round key scheduler
- * 
- * @author  Ajinkya Kale
+ * Implementación de la desencriptación de Speck 32/64
  *
  */
 
@@ -23,10 +15,7 @@ public class Decrypt {
 	short [] l2 = new short [22]; // stores L2 values
 	byte[] key; // stoes key
 	byte[] plaintext; // stores plaintext 
-	
-	/**
-	 * Constructor initilizing key and plaintext
-	 */
+
 	public Decrypt(byte [] key, byte []plaintext) {
 		this.key= key;
 		this.plaintext=plaintext;
@@ -34,7 +23,7 @@ public class Decrypt {
 
 
 	/**
-	 * This method sets the initial values of the key k0,lo,l1,l2
+	 * Setear los valores iniciales de la key K0,L0,L1,L2
 	 */
 
 	public void setKey(byte[] key) {
@@ -46,23 +35,7 @@ public class Decrypt {
 	}
 
 	/**
-	 * returns blocksize 
-	 */
-
-	public int blockSize() {
-		return 32;
-	}
-
-	/**
-	 * returns keysize 
-	 */
-
-	public int keySize() {
-		return 64;
-	}
-
-	/**
-	 * This method produceds 22 subkeys required to generate ciphertext
+	 * Producir las 22 keys necesarias para generar el ciphertext
 	 * 
 	 */
 	public void keySchedule(){
@@ -100,9 +73,7 @@ public class Decrypt {
 	}
 
 	/**
-	 * This method perfoms right rotation by 7
-	 * @param s
-	 * @return temp
+	 * Shift Right por 7
 	 */
 	private short l_right_rotate(short s) {
 		short x= (short) ((s& 0x0000FFFF)>>7);
@@ -112,9 +83,7 @@ public class Decrypt {
 	}
 
 	/**
-	 * This method performs left rotation by 2
-	 * @param s
-	 * @return temp
+	 * Shift Left por 2
 	 */
 	private short k_left_rotate(short s){
 		short y= (short)( (s& 0x0000FFFF)<<2);
@@ -124,9 +93,7 @@ public class Decrypt {
 	}
 
 	/**
-	 * This method performs right rotate vy 2 positions
-	 * @param s
-	 * @return temp
+	 * Shoft Right por 2
 	 */
 	private short right_rotate_by_2(short s){
 		short y= (short)( (s& 0x0000FFFF)>>2);
@@ -136,9 +103,7 @@ public class Decrypt {
 	}
 
 	/**
-	 * This method perform left rotation by 7 
-	 * @param s
-	 * @return temp
+	 * Shift Left por 7
 	 */
 	private short left_rotate_by_7(short s){
 		short x= (short) ((s& 0x0000FFFF)<<7);
@@ -148,8 +113,8 @@ public class Decrypt {
 	}
 
 	/**
-	 * This method decrypts the ciphertext using the subkey in reverse order.
-	 * Decryption consists of 22 rounds
+	 * Desencriptar el ciphertext usando la subkey en orden inverso.
+	 * consiste de 22 rondas
 	 */
 
 	public void decrypt(byte [] text){

@@ -6,6 +6,7 @@ public class Utils {
     private static final char[] int2hex = new char[]
             {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
+    //int a string
     public static String toString
             (int val)
     {
@@ -21,12 +22,14 @@ public class Utils {
         return buf.toString();
     }
 
+    //array de bytes a string
     public static String toString
             (byte[] val)
     {
         return toString (val, 0, val.length);
     }
 
+    //un pedazo de array de bytes a string
     public static String toString
             (byte[] val,
              int off,
@@ -47,6 +50,7 @@ public class Utils {
         return buf.toString();
     }
 
+    //string a array de bytes
     public static byte[] toByteArray
             (String str)
     {
@@ -56,6 +60,7 @@ public class Utils {
         return val;
     }
 
+    //string a byte array
     public static void toByteArray
             (String str,
              byte[] val,
@@ -87,6 +92,7 @@ public class Utils {
         }
     }
 
+    //hexa a int
     private static int hex2int
             (char digit)
     {
@@ -124,6 +130,7 @@ public class Utils {
     }
 
     //PackingUtils
+    //byte array a long en big-endian
     public static long packLongBigEndian
     (byte[] src,
      int srcPos)
@@ -135,6 +142,7 @@ public class Utils {
         return rv;
     }
 
+    //byte array a int en big-endian
     public static int packIntBigEndian
             (byte[] src,
              int srcPos)
@@ -146,6 +154,7 @@ public class Utils {
         return rv;
     }
 
+    //int a byte array en big-endian
     public static void unpackIntBigEndian
             (int src,
              byte[] dst,

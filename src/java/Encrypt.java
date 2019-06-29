@@ -4,7 +4,7 @@ import src.java.utils.Utils;
 
 /**
  * Este programa es una implementación 32/64 de Speck.
- * Realiza 22 rondas
+ * Realiza 22 rondas de encriptado
  *
  */
 public class Encrypt{
@@ -16,26 +16,9 @@ public class Encrypt{
 	byte [] plaintext; //plaintext
 	byte[] key;  //key
 
-	/**
-	 * Inicializar key y plaintext
-	 */
 	public Encrypt(byte [] key, byte []plaintext) {
 		this.key= key;
 		this.plaintext=plaintext;
-	}
-
-	/**
-	 * Tamaño de bloque
-	 */
-	public int blockSize() {
-		return 32;
-	}
-
-	/**
-	 * Tamaño de clave
-	 */
-	public int keySize() {
-		return 64;
 	}
 
 	/**
