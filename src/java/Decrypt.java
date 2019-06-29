@@ -175,32 +175,4 @@ public class Decrypt {
 
 	}
 
-	/**
-	 *This method is executed if args are not sufficient.
-	 * program exits here.
-	 */	
-	private static void usage()      {
-		System.err.println ("Usage: java src.java.EncryptFile <key> <ctfile>");
-		System.err.println ("<ctfile> = ciphertext file name");
-		System.err.println ("<key> = Key  (64 hex digits)");
-		System.exit (1);
-	}
-	/**
-	 * This is main program
-	 * @param args commandline arguments
-	 */
-	public static void main(String[] args) {
-		if(args.length !=2){
-			usage();
-		}		
-		byte[] key =Utils.toByteArray(args[0]);
-		byte[] plaintext = Utils.toByteArray(args[1]);
-		Decrypt s= new Decrypt(key, plaintext);
-		s.setKey(key);
-		s.keySchedule();
-		s.decrypt(plaintext);
-		System.out.println(Utils.toString(plaintext)); // this prints the plaintext output
-
-	}
-
 }

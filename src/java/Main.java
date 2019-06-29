@@ -13,22 +13,39 @@ public class Main {
 
     /**
      * Programa principal.
-     * args para encriptar un archivo: -ef <key> <input file> <output file>
-     * args para desencriptar un archivo: -df <key> <output file> <input file>
+     * uso:
+     *  para encriptar un archivo: -ef <key> <input file> <output file>
+     *  para desencriptar un archivo: -df <key> <output file> <input file>
+     *  para encriptar un texto plano: -e <key> <plaintext>
+     *  para desencriptar un texto cifrado: -d <key> <ciphertext>
      */
     public static void main(String[] args) throws IOException {
-        if(args.length!=4){
+        if(args.length < 3 || args.length > 4){
             errorMessage();
         }
         if(args[0].equals("-ef")){
-            System.out.println("encrypting file....");
+            System.out.println("Encriptando archivo....");
             encryptFile(args[1], args[2], args[3]);
-            System.out.println("Done!");
+            System.out.println("Listo!");
         }
-        if(args[0].equals("-df")){
-            System.out.println("decrypting file....");
+        else if(args[0].equals("-df")){
+            System.out.println("Desencriptando archivo....");
             decryptFile(args[1], args[2], args[3]);
-            System.out.println("Done!");
+            System.out.println("Listo!");
+        }
+        else if(args[0].equals("-e")){
+            System.out.println("Encriptando entrada....");
+            encryptPlainText(args[1], args[2]);
+            System.out.println("Listo!");
+        }
+        else if(args[0].equals("-d")){
+            System.out.println("Desencriptando entrada....");
+            desencryptCipherText(args[1], args[2]);
+            System.out.println("Listo!");
+        }
+        else{
+            System.err.println("No has ingresado una entrada correcta.");
+            errorMessage();
         }
     }
 
@@ -131,6 +148,26 @@ public class Main {
 
     }
 
+    private static void encryptPlainText(String inputKey, String inputPlaintext){
+        byte[] key = Utils.toByteArray(inputKey);
+        byte[] plaintext = Utils.toByteArray(inputPlaintext);
+        Encrypt encrypt= new Encrypt(key, plaintext);
+        encrypt.setKey(key);
+        encrypt.keySchedule();
+        encrypt.encrypt(plaintext);
+        System.out.println(Utils.toString(plaintext)); // printing the ciphertext  output
+    }
+
+    private static void desencryptCipherText(String inputKey, String inputCiphertext){
+        byte[] key =Utils.toByteArray(inputKey);
+        byte[] ciphertext = Utils.toByteArray(inputCiphertext);
+        Decrypt decrypt= new Decrypt(key, ciphertext);
+        decrypt.setKey(key);
+        decrypt.keySchedule();
+        decrypt.decrypt(ciphertext);
+        System.out.println(Utils.toString(ciphertext)); // this prints the plaintext output
+    }
+
     private static byte[] padArray(List<Byte> d) {
         byte [] temp = new byte[d.size()];
         for( int i=0; i< temp.length; i++){
@@ -165,10 +202,16 @@ public class Main {
     }
 
     private static void errorMessage() {
-        System.err.println ("Usage: java src.java.EncryptFile <key> <plaintext> <ciphertext>");
-        System.err.println ("<ptfile> = Plaintext file name");
-        System.err.println ("<ctfile> = Ciphertext file name");
-        System.err.println ("<key> = Key (64 hex digits)");
+        System.err.println("Uso:");
+        System.err.println ("Encriptar archivo: -ef <key> <ptfile> <ctfile>");
+        System.err.println ("Desencriptar archivo: -df <key> <ctfile> <ptfile>");
+        System.err.println ("Encriptar texto plano: -e <key> <pt>");
+        System.err.println ("Desencriptar texto cifrado: -d <key> <ct>");
+        System.err.println ("<ptfile> = Archivo de texto plano");
+        System.err.println ("<ctfile> = Archivo de texto cifrado");
+        System.err.println ("<key> = Key (16 dígitos Hexadecimales)");
+        System.err.println ("<pt> = Texto plano (8 dígitos Hexadecimales)");
+        System.err.println ("<ct> = Texto cifrado (8 dígitos Hexadecimales)");
         System.exit (1);
     }
 }

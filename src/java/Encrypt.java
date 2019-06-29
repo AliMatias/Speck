@@ -127,32 +127,4 @@ public class Encrypt{
 		return temp;
 	}
 
-	/**
-	 * Prints the useage error message
-	 */
-	private static void usage(){
-		System.err.println ("Usage: java src.java.EncryptFile <key> <plaintext>");
-		System.err.println ("<ptfile> = Plaintext file name"); 
-		System.err.println ("<key> = Key (64 hex digits)");
-		System.exit (1);
-	}
-
-	/**
-	 * This is main program
-	 * @param args commandline arguments 
-	 */
-	public static void main(String[] args) {
-		if(args.length !=2){
-			usage();	
-		}		
-		byte[] key = Utils.toByteArray(args[0]);
-		byte[] plaintext = Utils.toByteArray(args[1]);
-		Encrypt s= new Encrypt(key, plaintext);
-		s.setKey(key);
-		s.keySchedule();
-		s.encrypt(plaintext);
-		System.out.println(Utils.toString(plaintext)); // printing the ciphertext  output
-
-	}
-
 }
