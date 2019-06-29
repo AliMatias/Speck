@@ -1,31 +1,23 @@
-package src.java;/*
- * src.java.Encrypt.java
- * Version :  $ak$
- * Revision: log $ak$
- */
-
+package src.java;
 
 import src.java.utils.Utils;
 
 /**
- * This program is an implementation of block cipher Speck.
- * It encryptes the given plaintext by XORing with key generated 
- * from 22 round key scheduler
- * 
- * @author  Ajinkya Kale
+ * Este programa es una implementación 32/64 de Speck.
+ * Realiza 22 rondas
  *
  */
-public class Encrypt implements BlockCipher{
+public class Encrypt{
 
 	short [] k0= new short[22];  // stores subkeys Ki
 	short [] l0 =new short [22]; // stores L0 values, 16 bits of key
 	short [] l1 = new short[22]; // stores L1 values, 16 bits of key
 	short [] l2 = new short [22];// stores L2 values, 16 bits of key
-	byte [] plaintext; // stores plaintext 
-	byte[] key;  // stores key 
+	byte [] plaintext; //plaintext
+	byte[] key;  //key
 
 	/**
-	 * consturctor initializes the key and plaintext
+	 * Inicializar key y plaintext
 	 */
 	public Encrypt(byte [] key, byte []plaintext) {
 		this.key= key;
@@ -33,22 +25,22 @@ public class Encrypt implements BlockCipher{
 	}
 
 	/**
-	 * returns blocksize 
+	 * Tamaño de bloque
 	 */
 	public int blockSize() {
 		return 32;
 	}
+
 	/**
-	 * returns keysize 
+	 * Tamaño de clave
 	 */
 	public int keySize() {
 		return 64;
 	}
 
 	/**
-	 * This method sets the initial values of the key K0,L0,L1,L2
+	 * Setear los valores iniciales de la key K0,L0,L1,L2
 	 */
-
 	public void setKey(byte[] key) {
 		long key_1= Utils.packLongBigEndian(key, 0);
 		k0[0]= (short)(key_1 & 0x000000000000FFFFL);
@@ -59,8 +51,8 @@ public class Encrypt implements BlockCipher{
 
 
 	/**
-	 * This method encrypts the plaintext using the subkey.
-	 * Encryption consists of 22 rounds
+	 * Encriptar el plaintext, utilizando la subkey.
+	 * Consiste de 22 rondas
 	 */
 	public void encrypt(byte[] text) {
 		int  you =0;
@@ -77,17 +69,16 @@ public class Encrypt implements BlockCipher{
 	}
 
 	/**
-	 * This method produceds the 22 subkeys required to generate ciphertext
-	 * 
+	 * Producir las 22 keys necesarias para generar el ciphertext
 	 */
-	public void key_schedule(){
+	public void keySchedule(){
 
-		int count=1; // marker 
-		int l=1,k=1,m=1,j=1; // index for l0, l1, l2 and k respetively
+		int count=1;
+		int l=1,k=1,m=1,j=1; // índices para l0, l1, l2 and k respectivamente
 		int first=0, second=0, third=0; 
-		for(int i=0; i<21;i++){ // rounds 
+		for(int i=0; i<21;i++){
 			if( count==1){
-				l0[l]= (short)((k0[i] + l_right_rotate(l0[first]))^ (short)i);// GF addition is nothing but XOR
+				l0[l]= (short)((k0[i] + l_right_rotate(l0[first]))^ (short)i);
 				k0[j] = (short)(  k_left_rotate(k0[i])^ l0[l]);
 				l++;
 				j++;
@@ -116,9 +107,7 @@ public class Encrypt implements BlockCipher{
 	}
 
 	/**
-	 * This method performs right rotation.
-	 * @param s    
-	 * @return temp  
+	 * Shift Right
 	 */
 
 	private short l_right_rotate(short s) {
@@ -129,9 +118,7 @@ public class Encrypt implements BlockCipher{
 	}
 
 	/**
-	 * This method perform left rotation.
-	 * @param s
-	 * @return temp
+	 * Shift Left
 	 */
 	private short k_left_rotate(short s){
 		short y= (short)( (s& 0x0000FFFF)<<2);
@@ -162,7 +149,7 @@ public class Encrypt implements BlockCipher{
 		byte[] plaintext = Utils.toByteArray(args[1]);
 		Encrypt s= new Encrypt(key, plaintext);
 		s.setKey(key);
-		s.key_schedule();
+		s.keySchedule();
 		s.encrypt(plaintext);
 		System.out.println(Utils.toString(plaintext)); // printing the ciphertext  output
 

@@ -65,7 +65,7 @@ public class Decrypt {
 	 * This method produceds 22 subkeys required to generate ciphertext
 	 * 
 	 */
-	public void key_schedule1(){
+	public void keySchedule(){
 		int count=1;
 		int l=1,k=1,m=1,j=1;
 		int first=0, second=0, third=0;
@@ -197,7 +197,7 @@ public class Decrypt {
 		byte[] plaintext = Utils.toByteArray(args[1]);
 		Decrypt s= new Decrypt(key, plaintext);
 		s.setKey(key);
-		s.key_schedule1();
+		s.keySchedule();
 		s.decrypt(plaintext);
 		System.out.println(Utils.toString(plaintext)); // this prints the plaintext output
 
