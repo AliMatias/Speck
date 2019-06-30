@@ -57,7 +57,7 @@ public class Encrypt{
 	public void keySchedule(){
 
 		int count=1;
-		int l=1,k=1,m=1,j=1; // índices para l0, l1, l2 and k respectivamente
+		int l=1,k=1,m=1,j=1; // índices para l0, l1, l2 y k respectivamente
 		int first=0, second=0, third=0; 
 		for(int i=0; i<21;i++){
 			if( count==1){

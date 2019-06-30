@@ -51,10 +51,10 @@ public class Main {
 
     private static void encryptFile(String inputKey, String inputFile, String outputFile)
     throws IOException{
-        File plaintext= new File (inputFile); // plaintext file
+        File plaintext= new File (inputFile); // input file (plaintext)
 
-        File ciphertext= new File(outputFile); // ciphertext file in which ciphertext will be stored
-        byte [] key = Utils.toByteArray(inputKey); // key for encryption
+        File ciphertext= new File(outputFile); // output file (ciphertext)
+        byte [] key = Utils.toByteArray(inputKey); // key
 
         InputStream plain_t = new BufferedInputStream
                 (new FileInputStream(plaintext));
@@ -62,13 +62,13 @@ public class Main {
                 (new FileOutputStream (ciphertext));
 
         Path path = Paths.get(plaintext.getAbsolutePath());
-        byte[] p = Files.readAllBytes(path); // reads all bytes from file
+        byte[] p = Files.readAllBytes(path);
 
         List<Byte> d = new ArrayList<>();
         for (byte b:p) {
             d.add(b);
         }
-        d.add((byte) 0x80); // adding padding
+        d.add((byte) 0x80); // padding
 
         if(d.size() % 4 !=0){ // padding
             while(d.size()%4 !=0 ){
@@ -77,10 +77,10 @@ public class Main {
         }
         byte [] padded = padArray(d);  // padded array of bytes
         Encrypt encrypt = new Encrypt(key, padded);
-        encrypt.setKey(key); // sets the key
-        encrypt.keySchedule(); // generates 22 subkyes
+        encrypt.setKey(key);
+        encrypt.keySchedule(); // genera las 22 subkeys
         int iter=0;
-        while( iter != padded.length){ // encrytion of 4 bytes at a time
+        while( iter != padded.length){ // encripto 4 bytes a la vez
             int prev= iter;
             byte [] temp = {(padded[iter]), (padded[++iter]), (padded[++iter]), (padded[++iter])};
             int temp2= Utils.packIntBigEndian(temp, 0);
@@ -107,8 +107,8 @@ public class Main {
 
     private static void decryptFile(String inputKey, String inputFile, String outputFile)
     throws IOException{
-        File chiphertext= new File (inputFile);  // input file
-        File plaintext= new File(outputFile); // output file
+        File chiphertext= new File (inputFile);  // input file (ciphertext)
+        File plaintext= new File(outputFile); // output file (plaintext)
         byte [] key = Utils.toByteArray(inputKey); // key
         InputStream  cipher_t= new BufferedInputStream
                 (new FileInputStream (chiphertext));
@@ -116,14 +116,14 @@ public class Main {
                 (new FileOutputStream (plaintext));
 
         Path path = Paths.get(chiphertext.getAbsolutePath());
-        byte [] p = Files.readAllBytes(path); // reads all the bytes of file
+        byte [] p = Files.readAllBytes(path);
 
         Decrypt decrypt = new Decrypt(key, p);
-        decrypt.setKey(key); // sets the key
-        decrypt.keySchedule(); // generates subkeys
+        decrypt.setKey(key);
+        decrypt.keySchedule(); // genera las 22 subkeys
 
         int iter=0;
-        while( iter != p.length){  // decrypts the 4 bytes at a time
+        while( iter != p.length){  // desencripto 4 bytes a la vez
             int prev= iter;
             byte [] temp = {(p[iter]), (p[++iter]), (p[++iter]), (p[++iter])};
             int temp2= Utils.packIntBigEndian(temp, 0);
@@ -136,8 +136,8 @@ public class Main {
             iter++;
         }
 
-        byte [] t = removePadding(p); // orginaml plaintext without padding
-        // writies plaintext without padding to the file
+        byte [] t = removePadding(p);
+
         int c=0;
         while(c!= t.length){
             plain_t.write(t[c]);
@@ -155,7 +155,7 @@ public class Main {
         encrypt.setKey(key);
         encrypt.keySchedule();
         encrypt.encrypt(plaintext);
-        System.out.println(Utils.toString(plaintext)); // printing the ciphertext  output
+        System.out.println(Utils.toString(plaintext));
     }
 
     private static void decryptCipherText(String inputKey, String inputCiphertext){
@@ -165,7 +165,7 @@ public class Main {
         decrypt.setKey(key);
         decrypt.keySchedule();
         decrypt.decrypt(ciphertext);
-        System.out.println(Utils.toString(ciphertext)); // this prints the plaintext output
+        System.out.println(Utils.toString(ciphertext));
     }
 
     private static byte[] padArray(List<Byte> d) {
