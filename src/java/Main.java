@@ -40,7 +40,7 @@ public class Main {
         }
         else if(args[0].equals("-d")){
             System.out.println("Desencriptando entrada....");
-            desencryptCipherText(args[1], args[2]);
+            decryptCipherText(args[1], args[2]);
             System.out.println("Listo!");
         }
         else{
@@ -158,7 +158,7 @@ public class Main {
         System.out.println(Utils.toString(plaintext)); // printing the ciphertext  output
     }
 
-    private static void desencryptCipherText(String inputKey, String inputCiphertext){
+    private static void decryptCipherText(String inputKey, String inputCiphertext){
         byte[] key =Utils.toByteArray(inputKey);
         byte[] ciphertext = Utils.toByteArray(inputCiphertext);
         Decrypt decrypt= new Decrypt(key, ciphertext);
