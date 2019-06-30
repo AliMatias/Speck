@@ -9,10 +9,10 @@ import src.java.utils.Utils;
  */
 public class Encrypt{
 
-	short [] k0= new short[22];  // stores subkeys Ki
-	short [] l0 =new short [22]; // stores L0 values, 16 bits of key
-	short [] l1 = new short[22]; // stores L1 values, 16 bits of key
-	short [] l2 = new short [22];// stores L2 values, 16 bits of key
+	short [] k0= new short[22];  // subkeys Ki
+	short [] l0 =new short [22]; // valores L0, 16 bits de la key
+	short [] l1 = new short[22]; // valores L1, 16 bits de la key
+	short [] l2 = new short [22];// valores L2, 16 bits de la key
 	byte [] plaintext; //plaintext
 	byte[] key;  //key
 
@@ -41,9 +41,9 @@ public class Encrypt{
 		int  you =0;
 		int plaintext = Utils.packIntBigEndian(text, 0);
 		short  x =(short)((plaintext &  0xFFFF0000)>>16) ;
-		short y =(short)((plaintext & 0x0000FFFF));
+		short y =(short)(plaintext & 0x0000FFFF);
 		for(int i=0; i<22 ;i++){
-			x= (short) ((( l_right_rotate(x) + y)^ this.k0[i]) );
+			x= (short) (( l_right_rotate(x) + y)^ this.k0[i]);
 			y = (short) (k_left_rotate(y)^x);
 			you = x<<16|(y & 0x0000FFFF);
 		}
@@ -96,8 +96,7 @@ public class Encrypt{
 	private short l_right_rotate(short s) {
 		short x= (short) ((s& 0x0000FFFF)>>7);
 		short y= (short) ((s& 0x0000FFFF)<<9);
-		short temp = (short) (y|x);
-		return temp;
+		return (short) (y|x);
 	}
 
 	/**
@@ -106,8 +105,7 @@ public class Encrypt{
 	private short k_left_rotate(short s){
 		short y= (short)( (s& 0x0000FFFF)<<2);
 		short x= (short)((s& 0x0000FFFF)>>14);
-		short temp = (short) (y|x);
-		return temp;
+		return (short) (y|x);
 	}
 
 }

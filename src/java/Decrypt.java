@@ -9,12 +9,12 @@ import src.java.utils.Utils;
 
 public class Decrypt {
 
-	short [] k0= new short[22];  // stores subkeys
-	short [] l0 =new short [22]; // stores L0 values
-	short [] l1 = new short[22]; // stores L1 values
-	short [] l2 = new short [22]; // stores L2 values
-	byte[] key; // stoes key
-	byte[] plaintext; // stores plaintext 
+	short [] k0= new short[22];  // subkeys
+	short [] l0 =new short [22]; // valores L0
+	short [] l1 = new short[22]; // valores L1
+	short [] l2 = new short [22]; // valores L2
+	byte[] key; // key
+	byte[] plaintext; // plaintext
 
 	public Decrypt(byte [] key, byte []plaintext) {
 		this.key= key;
@@ -78,8 +78,7 @@ public class Decrypt {
 	private short l_right_rotate(short s) {
 		short x= (short) ((s& 0x0000FFFF)>>7);
 		short y= (short) ((s& 0x0000FFFF)<<9);
-		short temp = (short) (y|x);
-		return temp;
+		return (short) (y|x);
 	}
 
 	/**
@@ -88,8 +87,7 @@ public class Decrypt {
 	private short k_left_rotate(short s){
 		short y= (short)( (s& 0x0000FFFF)<<2);
 		short x= (short)((s& 0x0000FFFF)>>14);
-		short temp = (short) (y|x);
-		return temp;
+		return (short) (y|x);
 	}
 
 	/**
@@ -98,8 +96,7 @@ public class Decrypt {
 	private short right_rotate_by_2(short s){
 		short y= (short)( (s& 0x0000FFFF)>>2);
 		short x= (short)((s& 0x0000FFFF)<<14);
-		short temp = (short) (y|x);
-		return temp;
+		return (short) (y|x);
 	}
 
 	/**
@@ -108,8 +105,7 @@ public class Decrypt {
 	private short left_rotate_by_7(short s){
 		short x= (short) ((s& 0x0000FFFF)<<7);
 		short y= (short) ((s& 0x0000FFFF)>>9);
-		short temp = (short) (y|x);
-		return temp;
+		return (short) (y|x);
 	}
 
 	/**
@@ -121,14 +117,11 @@ public class Decrypt {
 		int dec=0;
 		int ciphertext = Utils.packIntBigEndian(text, 0);
 		short x = (short) ((ciphertext & 0xFFFF0000)>>16);
-		short y = (short) ((ciphertext & 0x0000FFFF));
+		short y = (short) (ciphertext & 0x0000FFFF);
 
 		for(int i=21; i>=0 ; i--){
-			short value1= (short)(x ^ y);
 			y= right_rotate_by_2((short)(x ^ y));
-			short value2= (short) (x ^ k0[i]);
-			short value3 = (short)((x ^ k0[i])- y);
-			x= (short)(left_rotate_by_7((short)((x ^ k0[i])- y)));
+			x= left_rotate_by_7((short)((x ^ k0[i])- y));
 			dec = x<<16 | (  y&0x0000FFFF);
 
 		}

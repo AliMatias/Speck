@@ -75,14 +75,14 @@ public class Main {
                 d.add((byte)0x00);
             }
         }
-        byte [] padded = (byte[]) padArray(d);  // padded array of bytes
+        byte [] padded = padArray(d);  // padded array of bytes
         Encrypt encrypt = new Encrypt(key, padded);
         encrypt.setKey(key); // sets the key
         encrypt.keySchedule(); // generates 22 subkyes
         int iter=0;
-        while( iter != padded.length){ // encrytion of 4 bytes ata time
+        while( iter != padded.length){ // encrytion of 4 bytes at a time
             int prev= iter;
-            byte [] temp = {(byte) (padded[iter]) ,(byte)(padded[++iter]), (byte)(padded[++iter]), (byte)(padded[++iter])};
+            byte [] temp = {(padded[iter]), (padded[++iter]), (padded[++iter]), (padded[++iter])};
             int temp2= Utils.packIntBigEndian(temp, 0);
             Utils.unpackIntBigEndian(temp2, temp, 0);
             encrypt.encrypt(temp);
@@ -125,7 +125,7 @@ public class Main {
         int iter=0;
         while( iter != p.length){  // decrypts the 4 bytes at a time
             int prev= iter;
-            byte [] temp = {(byte) (p[iter]) ,(byte)(p[++iter]), (byte)(p[++iter]), (byte)(p[++iter])};
+            byte [] temp = {(p[iter]), (p[++iter]), (p[++iter]), (p[++iter])};
             int temp2= Utils.packIntBigEndian(temp, 0);
             Utils.unpackIntBigEndian(temp2, temp, 0);
             decrypt.decrypt(temp);
@@ -171,7 +171,7 @@ public class Main {
     private static byte[] padArray(List<Byte> d) {
         byte [] temp = new byte[d.size()];
         for( int i=0; i< temp.length; i++){
-            temp[i]= (byte)d.get(i);
+            temp[i]= d.get(i);
         }
         return temp;
     }
@@ -179,7 +179,7 @@ public class Main {
     private static byte[] removePadding(byte [] ciphertext_ ){
         int i=ciphertext_.length-1;
         int counter=0;
-        List<Byte> u = new ArrayList<Byte>();
+        List<Byte> u = new ArrayList<>();
         byte[] temp;
 
         while(ciphertext_[i]== 0x0000){
