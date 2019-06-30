@@ -202,6 +202,7 @@ public class Main {
     }
 
     private static void errorMessage() {
+        System.err.println("Implementación de Speck en su variante 32/64");
         System.err.println("Uso:");
         System.err.println ("Encriptar archivo: -ef <key> <ptfile> <ctfile>");
         System.err.println ("Desencriptar archivo: -df <key> <ctfile> <ptfile>");
